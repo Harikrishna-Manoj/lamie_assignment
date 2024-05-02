@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lamie_pro/constants/utils/constant.dart';
+import 'package:lamie_pro/core/constants/utils/constant.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class SignUpScreen extends StatelessWidget {
