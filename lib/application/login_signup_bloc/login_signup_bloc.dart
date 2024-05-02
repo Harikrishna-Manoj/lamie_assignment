@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lamie_pro/service/login_service.dart';
-import 'package:lamie_pro/service/signup_service.dart';
+import 'package:lamie_pro/service/authentication/login_service.dart';
+import 'package:lamie_pro/service/authentication/signup_service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 

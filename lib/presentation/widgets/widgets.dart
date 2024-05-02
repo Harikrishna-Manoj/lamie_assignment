@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamie_pro/application/user_bloc/user_bloc.dart';
 import 'package:lamie_pro/presentation/screens/login_screen.dart';
 import 'package:lamie_pro/presentation/screens/signin_screen.dart';
 
@@ -45,14 +47,67 @@ class ActionButtons extends StatelessWidget {
 }
 
 class GoogleSignUpButton extends StatelessWidget {
-  const GoogleSignUpButton({
+  GoogleSignUpButton({
     super.key,
   });
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog.adaptive(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            title: const Text("Enter email"),
+            content: SizedBox(
+              width: size.width * 0.3,
+              height: size.height * 0.2,
+              child: TextFormFeildSignin(
+                controller: emailController,
+                title: 'Email Id',
+                hiniText: 'eg: johnsmith@gmail.com',
+                emailValidation: true,
+              ),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: Colors.red,
+                    size: 35,
+                  )),
+              IconButton(
+                  onPressed: () {
+                    {
+                      if (emailController.text.isEmpty) {
+                        showSnackbar('All fields are required', context);
+                      } else {
+                        if (RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(emailController.text)) {
+                          Navigator.pop(context);
+                        } else {
+                          showSnackbar('Email format is incorrect', context);
+                        }
+                      }
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.check_outlined,
+                    color: Colors.green,
+                    size: 35,
+                  ))
+            ],
+          ),
+        );
+      },
       child: SizedBox(
           height: 30, width: 30, child: Image.asset("asset/icons/Google.png")),
     );
@@ -236,14 +291,16 @@ class UserListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      BlocProvider.of<UserBloc>(context).add(FetchUserDataEvent());
+    });
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (context, index) {
         return ListTile(
           leading: const CircleAvatar(
             backgroundColor: Colors.grey,
-            backgroundImage: NetworkImage(
-                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fprofile-icon-male-user-person-avatar-symbol-vector-20910837&psig=AOvVaw3XendD-y_yeSB08PahTFuh&ust=1714721846005000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPCXkOy67oUDFQAAAAAdAAAAABAJ"),
+            backgroundImage: NetworkImage("http://via.placeholder.com/350x150"),
           ),
           title: Text("user${index + 1}"),
           subtitle: Text("email${index + 1}"),

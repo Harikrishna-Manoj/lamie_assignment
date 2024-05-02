@@ -19,6 +19,7 @@ class UserLogInService {
         log(result["access"]);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("access_token", result["access"]);
+        log(prefs.getString("access_token").toString());
         String statusCode = response.statusCode.toString();
         log(statusCode);
         return statusCode;

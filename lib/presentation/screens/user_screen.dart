@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class UserScreen extends StatelessWidget {

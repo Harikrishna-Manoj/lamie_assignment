@@ -122,7 +122,7 @@ class SignUpScreen extends StatelessWidget {
                 kHeight20,
                 const Center(child: Text('• or sign up with •')),
                 kHeight20,
-                const GoogleSignUpButton(),
+                GoogleSignUpButton(),
                 kHeight20
               ],
             ),
