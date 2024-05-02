@@ -21,7 +21,8 @@ class UserSignUpService {
     };
     try {
       final response = await clinet.post(Uri.parse(UrlClass.signUpUrl),
-          headers: {}, body: jsonEncode(body));
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(body));
       if (response.statusCode == 200 || response.statusCode == 201) {
         final result = jsonDecode(response.body);
         return (result["Text"].toString(), result["status"].toString());
@@ -31,5 +32,6 @@ class UserSignUpService {
     } catch (error) {
       log(error.toString());
     }
+    return ("Somthing went wrong", "");
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamie_pro/application/login_signup_bloc/login_signup_bloc.dart';
 import 'package:lamie_pro/core/constants/utils/constant.dart';
+import 'package:lamie_pro/presentation/screens/login_screen.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -71,19 +74,48 @@ class SignUpScreen extends StatelessWidget {
                         userNameController.text.isEmpty ||
                         emailController.text.isEmpty) {
                       showSnackbar('All fields are required', context);
-                    } else if (passwordController1.text.length < 6 ||
-                        passwordController2.text.length < 6) {
+                    } else if (passwordController1.text.length < 8 ||
+                        passwordController2.text.length < 8) {
                       showSnackbar(
-                          'Password must contain more than 6 letters', context);
+                          'Password must contain more than 8 letters', context);
                     } else if (passwordController1.text !=
                         passwordController2.text) {
                       showSnackbar('Enter the same password', context);
-                    } else {}
+                    } else {
+                      context.read<LoginSignupBloc>().add(SignUpUserEvent(
+                          emailId: emailController.text,
+                          userName: userNameController.text,
+                          password: passwordController1.text,
+                          confirmPassword: passwordController2.text,
+                          isGoggle: false));
+                    }
                   },
-                  child: const ActionButtons(
-                      colr: Colors.black,
-                      string: 'SIGN IN',
-                      stringColor: Colors.white),
+                  child: BlocListener<LoginSignupBloc, LoginSignupState>(
+                    listener: (context, state) {
+                      if (state is SignUpSubmittedState) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginScreen(),
+                            ));
+                      }
+                      if (state is LoadingState) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: const ActionButtons(
+                        colr: Colors.black,
+                        string: 'SIGN IN',
+                        stringColor: Colors.white),
+                  ),
                 ),
                 kHeight10,
                 const HaveAccount(),

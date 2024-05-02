@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamie_pro/application/login_signup_bloc/login_signup_bloc.dart';
 import 'package:lamie_pro/core/constants/utils/constant.dart';
 import 'package:lamie_pro/presentation/screens/user_screen.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
@@ -64,29 +66,49 @@ class LoginScreen extends StatelessWidget {
                         if (passwordController.text.isEmpty ||
                             emailController.text.isEmpty) {
                           showSnackbar('All fields are required', context);
-                        } else if (passwordController.text.length < 6) {
+                        } else if (passwordController.text.length < 8) {
                           showSnackbar(
-                              'Password must contain more than 6 letters',
+                              'Password must contain more than 8 letters',
                               context);
                         } else {
                           if (RegExp(
                                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(emailController.text)) {
+                            context.read<LoginSignupBloc>().add(LogInUserEvent(
+                                emailId: emailController.text,
+                                password: passwordController.text));
+                          } else {
+                            showSnackbar('Email format is incorrect', context);
+                          }
+                        }
+                      },
+                      child: BlocListener<LoginSignupBloc, LoginSignupState>(
+                        listener: (context, state) {
+                          if (state is LogInSubmittedState) {
                             Navigator.push(context, PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) {
                                 return const UserScreen();
                               },
                             ));
-                          } else {
-                            showSnackbar('Email format is incorrect', context);
                           }
-                        }
-                      },
-                      child: const ActionButtons(
-                          colr: Colors.black,
-                          string: 'LOG IN',
-                          stringColor: Colors.white),
+                          if (state is LoadingState) {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: const ActionButtons(
+                            colr: Colors.black,
+                            string: 'LOG IN',
+                            stringColor: Colors.white),
+                      ),
                     ),
                   ),
                 ],

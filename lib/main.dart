@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lamie_pro/application/login_signup_bloc/login_signup_bloc.dart';
 import 'package:lamie_pro/presentation/screens/signin_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main(List<String> args) {
   runApp(const MyApp());
@@ -10,9 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SignUpScreen(),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LoginSignupBloc(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SignUpScreen(),
+        ));
   }
 }
