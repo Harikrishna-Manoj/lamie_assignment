@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:lamie_pro/presentation/screens/search_screen.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class UserScreen extends StatelessWidget {
@@ -21,7 +23,11 @@ class UserScreen extends StatelessWidget {
           padding: EdgeInsets.only(right: 10.0, left: 10),
           child: Column(
             children: [
-              SearchField(),
+              Hero(
+                  tag: "serchfield",
+                  child: SearchField(
+                    fromUserpage: true,
+                  )),
               Expanded(
                 child: UserListWidget(),
               ),

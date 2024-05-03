@@ -11,7 +11,7 @@ class UserGoogleSignIn {
     final body = {'email': emailId};
     try {
       final response = await clinet.post(
-        Uri.parse(UrlClass.googleLogIn),
+        Uri.parse("${UrlClass.baseUrl}${UrlClass.googleLogIn}"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(body),
       );

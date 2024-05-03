@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lamie_pro/application/search_bloc/search_bloc.dart';
 import 'package:lamie_pro/application/user_bloc/user_bloc.dart';
 import 'package:lamie_pro/presentation/screens/login_screen.dart';
+import 'package:lamie_pro/presentation/screens/search_screen.dart';
 import 'package:lamie_pro/presentation/screens/signin_screen.dart';
 
 showSnackbar(String? text, BuildContext context) {
@@ -255,32 +257,53 @@ class BackNavigationButton extends StatelessWidget {
   }
 }
 
-class SearchField extends StatelessWidget {
+class SearchField extends StatefulWidget {
   const SearchField({
     super.key,
+    required this.fromUserpage,
   });
+  final bool fromUserpage;
 
   @override
+  State<SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<SearchField> {
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      // controller: searchcontroller,
-      cursorColor: Colors.black,
-      style: const TextStyle(color: Colors.black),
-      decoration: const InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          prefixIcon: Icon(Icons.search),
-          // filled: true,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          hintText: 'Search',
-          hintStyle: TextStyle(fontSize: 15, height: 1.5, color: Colors.black)),
-      onChanged: (value) {},
+    return Material(
+      child: TextFormField(
+        onTap: () => widget.fromUserpage
+            ? Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchScreen(),
+                ))
+            : null,
+        cursorColor: Colors.black,
+        keyboardType: widget.fromUserpage ? TextInputType.none : null,
+        style: const TextStyle(color: Colors.black),
+        decoration: const InputDecoration(
+            contentPadding: EdgeInsets.zero,
+            prefixIcon: Icon(Icons.search),
+            // filled: true,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            hintText: 'Search',
+            hintStyle:
+                TextStyle(fontSize: 15, height: 1.5, color: Colors.black)),
+        onChanged: (value) {
+          context
+              .read<SearchBloc>()
+              .add(SearchUserDataEvent(searchingUser: value));
+        },
+      ),
     );
   }
 }
@@ -328,6 +351,51 @@ class UserListWidget extends StatelessWidget {
                       color: Colors.black,
                     ),
                   );
+      },
+    );
+  }
+}
+
+class SerachedUserListWidget extends StatelessWidget {
+  const SerachedUserListWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      BlocProvider.of<UserBloc>(context).add(FetchUserDataEvent());
+    });
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return state is SearchUserDataLoadingState
+            ? const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.black,
+                ),
+              )
+            : state is SearchUserDataLoadedState
+                ? state.searchList.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: state.searchList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {},
+                            leading: const CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              backgroundImage:
+                                  AssetImage("asset/images/profile.png"),
+                            ),
+                            title: Text(state.searchList[index].username ??
+                                "No username"),
+                            subtitle: Text(
+                                state.searchList[index].email ?? 'NO email'),
+                          );
+                        },
+                      )
+                    : const Center(child: Text("No user"))
+                : const Center(child: Text("No user"));
       },
     );
   }

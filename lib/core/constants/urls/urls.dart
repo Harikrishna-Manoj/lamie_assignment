@@ -1,10 +1,10 @@
 class UrlClass {
-  static const String signUpUrl = "https://backendrealchat.molla.cloud/signup/";
-  static const String logInUrl = "https://backendrealchat.molla.cloud/token/";
-  static const String googleLogIn =
-      "https://backendrealchat.molla.cloud/google_login/";
-  static const String userDataFetchUrl =
-      "https://backendrealchat.molla.cloud/chat/connections/";
+  static const String baseUrl = "https://backendrealchat.molla.cloud";
+  static const String signUpUrl = "/signup/";
+  static const String logInUrl = "/token/";
+  static const String googleLogIn = "/google_login/";
+  static const String userDataFetchUrl = "/chat/connections/";
+  static const String searchUrl = "/chat/search/?search=";
 }
 
 class TokenClass {

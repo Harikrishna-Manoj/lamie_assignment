@@ -13,16 +13,17 @@ class UserService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String accessToken = prefs.getString("access_token").toString();
     try {
-      final response = await clinet
-          .get(Uri.parse("${UrlClass.userDataFetchUrl}2/"), headers: {
-        "Content-Type": "application/json",
-        'Authorization': "Bearer $accessToken",
-      });
+      final response = await clinet.get(
+          Uri.parse("${UrlClass.baseUrl}${UrlClass.userDataFetchUrl}2/"),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': "Bearer $accessToken",
+          });
       if (response.statusCode == 200) {
         UserModel users = UserModel.fromJson(jsonDecode(response.body));
         List<Connections>? userConnectionList = users.connections;
-        log(users.connections!.length.toString());
-        log(jsonDecode(response.body).toString());
+        // log(users.connections!.length.toString());
+        // log(jsonDecode(response.body).toString());
         return userConnectionList;
       }
     } catch (error) {

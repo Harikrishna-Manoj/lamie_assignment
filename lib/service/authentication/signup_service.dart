@@ -20,7 +20,8 @@ class UserSignUpService {
       "is_google": isGoggle //boolianfield
     };
     try {
-      final response = await clinet.post(Uri.parse(UrlClass.signUpUrl),
+      final response = await clinet.post(
+          Uri.parse("${UrlClass.baseUrl}${UrlClass.signUpUrl}"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(body));
       if (response.statusCode == 200 || response.statusCode == 201) {

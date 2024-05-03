@@ -11,7 +11,8 @@ class UserLogInService {
       {required String emailId, required String password}) async {
     final body = {"email": emailId, "password": password};
     try {
-      final response = await clinet.post(Uri.parse(UrlClass.logInUrl),
+      final response = await clinet.post(
+          Uri.parse("${UrlClass.baseUrl}${UrlClass.logInUrl}"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(body));
       if (response.statusCode == 200 || response.statusCode == 201) {

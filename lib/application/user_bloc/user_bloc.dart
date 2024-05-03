@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamie_pro/core/model/user_model.dart';
-import 'package:lamie_pro/service/user_service.dart';
+import 'package:lamie_pro/service/user_service/user_service.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
