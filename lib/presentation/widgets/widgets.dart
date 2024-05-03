@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamie_pro/application/user_bloc/user_bloc.dart';
@@ -294,17 +295,39 @@ class UserListWidget extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       BlocProvider.of<UserBloc>(context).add(FetchUserDataEvent());
     });
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: const CircleAvatar(
-            backgroundColor: Colors.grey,
-            backgroundImage: NetworkImage("http://via.placeholder.com/350x150"),
-          ),
-          title: Text("user${index + 1}"),
-          subtitle: Text("email${index + 1}"),
-        );
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        return state is UserDataLoadingState
+            ? const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.black,
+                ),
+              )
+            : state is UserDataLoadedState
+                ? ListView.builder(
+                    itemCount: state.userList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {},
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          backgroundImage:
+                              AssetImage("asset/images/profile.png"),
+                        ),
+                        title: Text(
+                            state.userList[index].username ?? "No username"),
+                        subtitle:
+                            Text(state.userList[index].email ?? 'NO email'),
+                      );
+                    },
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.black,
+                    ),
+                  );
       },
     );
   }
