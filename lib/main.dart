@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lamie_pro/application/login_signup_bloc/login_signup_bloc.dart';
+import 'package:lamie_pro/application/message_bloc/message_bloc.dart';
 import 'package:lamie_pro/application/search_bloc/search_bloc.dart';
 import 'package:lamie_pro/application/user_bloc/user_bloc.dart';
 import 'package:lamie_pro/presentation/screens/signin_screen.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => SearchBloc(),
+          ),
+          BlocProvider(
+            create: (context) => MessageBloc(),
           )
         ],
         child: MaterialApp(

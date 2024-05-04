@@ -14,3 +14,10 @@ final class SignUpSubmittedState extends LoginSignupState {
 
   SignUpSubmittedState({required this.resultText, required this.statusCode});
 }
+
+final class GoogleLogInSubmittedState extends LoginSignupState {
+  final String resultText, statusCode;
+
+  GoogleLogInSubmittedState(
+      {required this.statusCode, required this.resultText});
+}

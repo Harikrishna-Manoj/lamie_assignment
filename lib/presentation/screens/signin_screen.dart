@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lamie_pro/application/login_signup_bloc/login_signup_bloc.dart';
 import 'package:lamie_pro/core/constants/utils/constant.dart';
 import 'package:lamie_pro/presentation/screens/login_screen.dart';
+import 'package:lamie_pro/presentation/screens/user_screen.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -93,11 +94,28 @@ class SignUpScreen extends StatelessWidget {
                   child: BlocListener<LoginSignupBloc, LoginSignupState>(
                     listener: (context, state) {
                       if (state is SignUpSubmittedState) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ));
+                        if (state.statusCode == "201") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.resultText)));
+                        }
+                      }
+                      if (state is GoogleLogInSubmittedState) {
+                        if (state.statusCode == "200") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UserScreen(),
+                              ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.resultText)));
+                        }
                       }
                       if (state is LoadingState) {
                         showDialog(
@@ -122,7 +140,7 @@ class SignUpScreen extends StatelessWidget {
                 kHeight20,
                 const Center(child: Text('• or sign up with •')),
                 kHeight20,
-                GoogleSignUpButton(),
+                const GoogleSignUpButton(),
                 kHeight20
               ],
             ),

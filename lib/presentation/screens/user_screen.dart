@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:lamie_pro/presentation/screens/search_screen.dart';
 import 'package:lamie_pro/presentation/widgets/widgets.dart';
 
 class UserScreen extends StatelessWidget {
@@ -18,17 +16,18 @@ class UserScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(right: 10.0, left: 10),
+          padding: const EdgeInsets.only(right: 10.0, left: 10),
           child: Column(
             children: [
               Hero(
                   tag: "serchfield",
-                  child: SearchField(
+                  child: CustomTextField(
+                    isSearchField: true,
                     fromUserpage: true,
                   )),
-              Expanded(
+              const Expanded(
                 child: UserListWidget(),
               ),
             ],

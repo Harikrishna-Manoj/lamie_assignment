@@ -6,7 +6,7 @@ import 'package:lamie_pro/core/constants/urls/urls.dart';
 
 class UserSignUpService {
   final clinet = http.Client();
-  Future<(String resultText, String resultStatusCode)?> userSignUp(
+  Future<(String resultText, String resultStatusCode)> userSignUp(
       {required String emailId,
       required String userName,
       required String password,
@@ -33,6 +33,6 @@ class UserSignUpService {
     } catch (error) {
       log(error.toString());
     }
-    return ("Somthing went wrong", "");
+    return ("Somthing went wrong", "error");
   }
 }

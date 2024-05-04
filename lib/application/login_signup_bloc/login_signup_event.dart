@@ -20,3 +20,5 @@ class SignUpUserEvent extends LoginSignupEvent {
       required this.confirmPassword,
       required this.isGoggle});
 }
+
+class GoogleSignIEvent extends LoginSignupEvent {}
